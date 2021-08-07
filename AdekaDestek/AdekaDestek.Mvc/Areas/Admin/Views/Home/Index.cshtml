@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "_Layout";
+    ViewBag.Title = "Ana Sayfa";
+}
+<div class="card card-waves mb-4 mt-5">
+    <div class="card-body p-5">
+        <div class="row align-items-center justify-content-between">
+            <div class="col">
+                <h2 class="text-primary">Bordro Görüntüleme</h2>
+                <p class="text-gray-700"> Bordronuzu görüntüleyebilmek için iki faktörlü kimlik doğrulama işlemini aktif hala getirmeniz gerekmektedir.
+                Bu işlem güvenlik sebebiyle zorunludur. İki faktörlü kimlik doğrulama işlemini gerçekleştirmek için aşağıdaki butona tıklayabilirsiniz. </p>
+                <a class="btn btn-primary p-3" asp-area="Admin" asp-controller="User" asp-action="TwoFactorAuth">
+                    Git
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right ml-1"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+            </div>
+            <div class="col d-none d-lg-block mt-xxl-n4"><img class="img-fluid px-xl-4 mt-xxl-n5" src="~/AdminArea/img/img-homepages/payroll-security.jpg"></div>
+        </div>
+    </div>
+</div>

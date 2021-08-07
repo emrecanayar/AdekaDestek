@@ -1,0 +1,120 @@
+﻿@model AdekaDestek.Entities.Dtos.PayrollDto
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Bordro Sorgula";
+}
+<div class="row">
+    <div class="col-lg-6 offset-lg-3">
+        <div class="card mt-3">
+            <div class="card-header">
+                <h4 class="text-center"><span class="fas fa-file-pdf"></span> Bordro Sorgula</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="SearchPayroll" asp-controller="Payroll" method="post">
+                    <div asp-validation-summary="All" class="text-danger" id="validation-summary"></div>
+                    <div class="form-group">
+                        <label for="yearList" asp-for="Year"></label>
+                        <select id="yearList" class="form-control" asp-for="Year">
+                            <option></option>
+                            <option value="2000">2020</option>
+                            <option value="2021">2021</option>
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="monthList" asp-for="Month"></label>
+                        <select id="monthList" class="form-control" asp-for="Month">
+                            <option></option>
+                            <option value="01" id="0">Ocak</option>
+                            <option value="02" id="1">Şubat</option>
+                            <option value="03" id="2">Mart</option>
+                            <option value="04" id="3">Nisan</option>
+                            <option value="05" id="4">Mayıs</option>
+                            <option value="06" id="5">Haziran</option>
+                            <option value="07" id="6">Temmuz</option>
+                            <option value="08" id="7">Ağustos</option>
+                            <option value="09" id="8">Eylül</option>
+                            <option value="10" id="9">Ekim</option>
+                            <option value="11" id="10">Kasım</option>
+                            <option value="12" id="11">Aralık</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block" formtarget="_blank"><span class="fas fa-search"></span> Sorgula</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/trumbowyg.min.js" integrity="sha512-sffB9/tXFFTwradcJHhojkhmrCj0hWeaz8M05Aaap5/vlYBfLx5Y7woKi6y0NrqVNgben6OIANTGGlojPTQGEw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/langs/tr.min.js" integrity="sha512-+HGzdrYvtA0U9cp5kJad8OpjTvUi6ywZ9z9kXFGiV3EaAR1II5X6lfulUm6/F9GKesHW+jHFfAqwXK0juybvMw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/colors/trumbowyg.colors.min.js" integrity="sha512-iT7g30i1//3OBZsfoc5XmlULnKQKyxir582Z9fIFWI6+ohfrTdns118QYhCTt0d09aRGcE7IRvCFjw2wngaqRQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/emoji/trumbowyg.emoji.min.js" integrity="sha512-C1y8Ma4rukPZAgoB+9AWiKNMWXvWXGDygpcYuL/lM3YKUcZLUgFwF8brKYML73a5YeZ4y7hmY3604Tzx4f4k0Q==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/fontfamily/trumbowyg.fontfamily.min.js" integrity="sha512-tDDpWlhruXFSzPin7PeSOo/ZklJv354ZUibgoTnthgO9lQUiNn4etCFGNwT4c3WUCZ1jWZgOVrXGMqiApe9sBg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/fontsize/trumbowyg.fontsize.min.js" integrity="sha512-DOJaq3OCe5hLSr73aQBMiJY4kc+L5UwessOl6g2oxyy7VDnZVWt+TgWVy2nh2ypf7bwoaxZmPnIMiRC5PNZecA==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#yearList').select2({
+
+                theme: 'bootstrap4',
+                placeholder: "Yıl Seçiniz...",
+                allowClear: true
+            });
+
+            $('#monthList').select2({
+
+                theme: 'bootstrap4',
+                placeholder: "Ay Seçiniz...",
+                allowClear: true
+            });
+
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            var day = date.getDate();
+
+            if (day > 26) {
+
+                $("#monthList option").each(function () {
+                    if ($(this).attr("id") == month)
+                        console.log($(this).attr("id"));
+                    $(this).attr("selected", "selected");
+                });
+            }
+            else {
+                $("#monthList option").each(function () {
+                    if ($(this).attr("id") == (month - 1))
+                        console.log($(this).attr("id"));
+                    $(this).attr({
+                        selected: true,
+                    });
+                });
+            }
+
+            $("#getPayroll").click(function () {
+
+                window.open("/Admin/Payroll/GetPayroll", "MyWindow", "toolbar=0, menubar=no,scrollbars=no,resizable=no,location=no,directories=no,status=no");
+
+            });
+        });
+    </script>
+}
+
+@section Styles{
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/ui/trumbowyg.min.css" integrity="sha512-iw/TO6rC/bRmSOiXlanoUCVdNrnJBCOufp2s3vhTPyP1Z0CtTSBNbEd5wIo8VJanpONGJSyPOZ5ZRjZ/ojmc7g==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/colors/ui/trumbowyg.colors.min.css" integrity="sha512-8dXb2ITE13jLrqqGDVTU8kKl9vHZI9E4TpZGyfhevHeF+/cWWA17wVj+SKX3+QHqZISiGihaCOyK3nA152ShDg==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.23.0/plugins/emoji/ui/trumbowyg.emoji.min.css" integrity="sha512-T2q2UM7Pm3t6Fu0VTRcuVMuaQf3/wP1aFi+/NyvpoVV0VBxN1Pqlmq57Jfg1IPRQCfFQOPLKBwoXA28+1gd/Ow==" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/cupertino/jquery-ui.min.css" integrity="sha512-ug/p2fTnYRx/TfVgL8ejTWolaq93X+48/FLS9fKf7AiazbxHkSEENdzWkOxbjJO/X1grUPt9ERfBt21iLh2dxg==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/cupertino/theme.min.css" integrity="sha512-adRIgePtMQgAVB+Mfkhl+Nyva/WllWlFzJyyhYCjznU3Di+Z4SsYi1Rqsep11PYLpUsW/SjE4NXUkIjabQJCOQ==" crossorigin="anonymous" />
+    <link href="~/AdminArea/css/select2-bootstrap4.min.css" rel="stylesheet" />
+}

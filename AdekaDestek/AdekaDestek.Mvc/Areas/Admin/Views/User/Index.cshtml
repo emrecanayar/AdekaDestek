@@ -1,0 +1,90 @@
+﻿@using AdekaDestek.Core.Utilities.Results.ComplexTypes
+@model AdekaDestek.Entities.Dtos.UserListDto
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Kullanıcılar";
+}
+<ol class="breadcrumb mb-3 mt-2">
+    <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a></li>
+    <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="User" asp-action="Index">Kullanıcılar</a></li>
+</ol>
+@if (Model.ResultStatus == ResultStatus.Success)
+{
+    <div id="modalPlaceHolder" aria-hidden="true"></div>
+    <div class="card mb-4 mt-2">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            Kullanıcılar
+        </div>
+        <div class="card-body">
+            <div class="spinner-border" role="status" style="display: none;">
+                <span class="sr-only">Yükleniyor...</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="usersTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Kullanıcı Adı</th>
+                            <th>E-Posta Adresi</th>
+                            <th>Adı</th>
+                            <th>Soyadı</th>
+                            <th>Telefon Numarası</th>
+                            <th>Sap Kullanıcı Adı</th>
+                            <th>Sap Personel Numarası</th>
+                            <th>İnfini Kullanıcı Adı</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Id</th>
+                            <th>Kullanıcı Adı</th>
+                            <th>E-Posta Adresi</th>
+                            <th>Adı</th>
+                            <th>Soyadı</th>
+                            <th>Telefon Numarası</th>
+                            <th>Sap Kullanıcı Adı</th>
+                            <th>Sap Personel Numarası</th>
+                            <th>İnfini Kullanıcı Adı</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            <tr name="@user.Id">
+                                <td>@user.Id</td>
+                                <td>@user.UserName</td>
+                                <td>@user.Email</td>
+                                <td>@user.FirstName</td>
+                                <td>@user.LastName</td>
+                                <td>@user.PhoneNumber</td>
+                                <td>@user.SapUserName</td>
+                                <td>@user.SapEmployeeNo</td>
+                                <td>@user.InfiniUserName</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm btn-detail" data-id="@user.Id" data-toggle="tooltip" data-placement="top" title="Kullanıcı detayı"><span class="fas fa-newspaper"></span></button>
+                                    <button class="btn btn-warning btn-sm btn-assign" data-id="@user.Id" data-toggle="tooltip" data-placement="top" title="Rol ata"><span class="fas fa-user-shield"></span></button>
+                                    <button class="btn btn-primary btn-sm btn-update" data-id="@user.Id" data-toggle="tooltip" data-placement="top" title="Kullanıcı güncelle"><span class="fas fa-edit"></span></button>
+                                    <button class="btn btn-danger btn-sm btn-delete" data-id="@user.Id" data-toggle="tooltip" data-placement="top" title="Kullanıcı Sil"><span class="fas fa-minus-circle"></span></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+@if (Model.ResultStatus == ResultStatus.Error)
+{
+    <div class="alert alert-danger mt-3">
+        @Model.Message <br />
+        Dashboard sayfasına geri dönmek için lütfen <a class="alert-link" asp-area="Admin" asp-controller="Home" asp-action="Index">tıklayınız.</a>
+    </div>
+}
+@section Scripts
+{
+    <script src="~/AdminArea/js/userIndex.js" type="application/ecmascript"></script>
+}

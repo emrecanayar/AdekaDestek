@@ -1,0 +1,139 @@
+﻿@model AdekaDestek.Mvc.Areas.Admin.Models.UserWithRolesViewModel
+@using Microsoft.Extensions.Options
+@using AdekaDestek.Entities.Concrete
+@inject IOptionsSnapshot<WebSiteInfo> WebSiteInfo
+@{
+    var websiteInfo = WebSiteInfo.Value;
+}
+
+
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-area="Admin" asp-action="Index" asp-controller="Home">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-home"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">@websiteInfo.MenuTitle <sup></sup></div>
+    </a>
+    @if (Model.Roles.Any(r => r.Equals("SuperAdmin")))
+    {
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+            <a class="nav-link" href="index.html">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+    }
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        İnsan Kaynakları
+    </div>
+
+    <!-- Nav Item - Payroll Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" asp-area="Admin" asp-controller="Payroll" asp-action="SearchPayroll">
+            <i class="fas fa-file-pdf"></i>
+            <span>Bordro Görüntüle</span>
+        </a>
+    </li>
+    <!-- Nav Item - Annual permit  Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Yıllık İzin</span>
+        </a>
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Yıllık İzin Komponentleri:</h6>
+                <a class="collapse-item" href="utilities-color.html">Görüntüle</a>
+                <a class="collapse-item" href="utilities-border.html">Talep Et</a>
+                <a class="collapse-item" href="utilities-animation.html">Talep Durumlarım</a>
+                <a class="collapse-item" href="utilities-other.html">Talep Onay</a>
+            </div>
+        </div>
+    </li>
+
+    @if (Model.Roles.Any(r => r.Equals("SuperAdmin")))
+    {
+
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Admın
+        </div>
+
+        <!-- Nav Item - Admin Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-users"></i>
+                <span>Kullanıcılar</span>
+            </a>
+            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    @if (Model.Roles.Any(r => r.Equals("SuperAdmin") || r.Equals("Role.Read")))
+                    {
+                        <h6 class="collapse-header">Rol Yönetimi</h6>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="Role" asp-action="Index">Roller</a>
+                    }
+
+                    @if (Model.Roles.Any(r => r.Equals("SuperAdmin") || r.Equals("User.Read")))
+                    {
+
+                        <div class="collapse-divider"></div>
+
+                        <h6 class="collapse-header">Kullanıcı Yönetimi</h6>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="User" asp-action="Index">Kullanıcılar</a>
+                    }
+                </div>
+            </div>
+        </li>
+
+        @if (Model.Roles.Any(r => r.Equals("SuperAdmin")))
+        {
+            <!-- Nav Item - Settings Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings" aria-expanded="true" aria-controls="collapseSettings">
+                    <i class="fas fa-tools"></i>
+                    <span>Ayarlar</span>
+                </a>
+                <div id="collapseSettings" class="collapse" aria-labelledby="headingSettings" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Sayfa Ayarı Yönetimi</h6>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="Options" asp-action="GeneralSettings">Genel Ayarlar</a>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="Options" asp-action="EmailSettings">E-posta Ayarları</a>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="Options" asp-action="SmsSettings">Sms Ayarları</a>
+                        <a class="collapse-item" asp-area="Admin" asp-controller="Options" asp-action="TimeLeftSettings">Süre Ayarı</a>
+
+
+                    </div>
+                </div>
+            </li>
+        }
+
+
+    }
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+
+</ul>
+
+<!-- End of Sidebar -->

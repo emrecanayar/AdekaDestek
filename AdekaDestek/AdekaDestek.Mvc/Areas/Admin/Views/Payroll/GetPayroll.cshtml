@@ -1,0 +1,1111 @@
+﻿@using System.Globalization;
+@using System.Data;
+@model AdekaDestek.Entities.Dtos.PayrollListDto
+@{
+    Layout = "";
+    ViewBag.Title = "Bordro Görüntüleniyor";
+}
+<html>
+<head>
+    <link rel="icon" type="image/png" href="~/AdminArea/img/icons/favicon.ico" />
+    @section Styles{
+
+        <link href="~/AdminArea/css/payroll.css" rel="stylesheet" />
+    }
+</head>
+<body>
+    <div id="printDiv">
+
+        <table class="tg mt-3" align="center" style="undefined;table-layout: fixed; width: 1339px">
+            <colgroup>
+                <col style="width: 152.005682px">
+                <col style="width: 25.005682px">
+                <col style="width: 317.005682px">
+                <col style="width: 164.005682px">
+                <col style="width: 26.005682px">
+                <col style="width: 131.005682px">
+                <col style="width: 198.005682px">
+                <col style="width: 26.005682px">
+                <col style="width: 300.005682px">
+            </colgroup>
+            <thead>
+                @foreach (var personelInfo in Model.PayrollPersonelInfoList)
+                {
+                    <tr>
+                        @if (personelInfo.CompanyCode == "1000")
+                        {
+                            <th class="tg-91w8" colspan="3" align="left"><img src="~/AdminArea/img/img-pages/payroll-adeka-logo.png" alt="Image" width="260" height="80"></th>
+                        }
+                        @if (personelInfo.CompanyCode == "2000")
+                        {
+                            <th class="tg-91w8" colspan="3" align="left"><img src="~/AdminArea/img/img-pages/payroll-pensa-logo.png" alt="Image" width="260" height="80"></th>
+
+                        }
+                        @if (personelInfo.CompanyCode == "3000")
+                        {
+                            <th class="tg-91w8" colspan="3" align="left"><img src="~/AdminArea/img/img-pages/payroll-innogens-logo.png" alt="Image" width="260" height="80"></th>
+                        }
+
+                        <th class="tg-r2yh" colspan="5"><h2 class="h2"><br />Maaş Bordrosu</h2></th>
+                        <th class="tg-l6li"></th>
+                    </tr>
+                }
+
+
+                <tr>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var personelInfo in Model.PayrollPersonelInfoList)
+                {
+
+                    <tr>
+                        <td class="tg-l6li">Firma</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li">@personelInfo.Company</td>
+                        <td class="tg-l6li">Sigorta No</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li">@personelInfo.InsuranceRegistrationNumber</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dönem</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@personelInfo.Period</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Departman</td>
+                        <td class="tg-91w8">:</td>
+                        @{
+
+                            @if (personelInfo.Department.ToString().Length > 30)
+                            {
+                                string subStringDepartment = personelInfo.Department.ToString().Substring(0, 30);
+                                <td class="tg-l6li">@subStringDepartment</td>
+                            }
+                            else
+                            {
+                                string departmant = personelInfo.Department.ToString();
+                                <td class="tg-l6li">@departmant</td>
+                            }
+                        }
+
+                        <td class="tg-l6li">İşe Giriş</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li">@personelInfo.StartDateOfWork</td>
+                        @{
+                            string[] tasks = personelInfo.Task.Split(' ');
+                            int words = tasks.Length;
+                            string taskFirstSection = "";
+                            string taskSecondSection = "";
+                            switch (words)
+                            {
+                                case 1:
+                                    if (tasks[0].Length <= 17)
+                                    {
+                                        taskFirstSection = tasks[0].ToString();
+                                    }
+                                    break;
+                                case 2:
+                                    if (tasks[0].Length + tasks[1].Length <= 17)
+                                    {
+                                        taskFirstSection = $"{tasks[0].ToString()} {tasks[1].ToString()}";
+                                    }
+                                    break;
+                                case 3:
+                                    if (tasks[0].Length + tasks[1].Length + tasks[2].Length <= 17)
+                                    {
+                                        taskFirstSection = $"{tasks[0].ToString()} {tasks[1].ToString()} {tasks[2].ToString()}";
+                                    }
+                                    else if (tasks[0].Length + tasks[1].Length + tasks[2].Length > 17)
+                                    {
+                                        taskFirstSection = $"{tasks[0].ToString()} {tasks[1].ToString()}";
+                                        taskSecondSection = $"{tasks[2].ToString()}";
+                                    }
+                                    break;
+                                case 4:
+                                    if (tasks[0].Length + tasks[1].Length + tasks[2].Length <= 17)
+                                    {
+                                        taskFirstSection = $"{tasks[0].ToString()} {tasks[1].ToString()} {tasks[2].ToString()}";
+                                        taskSecondSection = $"{tasks[3].ToString()}";
+                                    }
+                                    else if (tasks[0].Length + tasks[1].Length + tasks[2].Length > 17)
+                                    {
+                                        taskFirstSection = $"{tasks[0].ToString()} {tasks[1].ToString()}";
+                                        taskSecondSection = $"{tasks[2].ToString()} {tasks[3].ToString()}";
+                                    }
+                                    break;
+                                case 5:
+                                    if (tasks[0].Length + tasks[1].Length + tasks[2].Length <= 17)
+                                    {
+                                        taskFirstSection = $"{tasks[0].ToString()} {tasks[1].ToString()} {tasks[2].ToString()}";
+                                        taskSecondSection = $"{tasks[3].ToString()} {tasks[4].ToString()}";
+                                    }
+                                    else if (tasks[0].Length + tasks[1].Length + tasks[2].Length > 17)
+                                    {
+                                        taskFirstSection = $"{tasks[0].ToString()} {tasks[1].ToString()}";
+                                        taskSecondSection = $"{tasks[2].ToString()} {tasks[3].ToString()} {tasks[4].ToString()}";
+                                    }
+                                    break;
+                                case 6:
+                                    if (tasks[0].Length + tasks[1].Length + tasks[2].Length <= 17)
+                                    {
+                                        taskFirstSection = $"{tasks[0].ToString()} {tasks[1].ToString()} {tasks[2].ToString()}";
+                                        taskSecondSection = $"{tasks[3].ToString()} {tasks[4].ToString()} {tasks[5].ToString()}";
+                                    }
+                                    else if (tasks[0].Length + tasks[1].Length + tasks[2].Length > 17)
+                                    {
+                                        taskFirstSection = $"{tasks[0].ToString()} {tasks[1].ToString()}";
+                                        taskSecondSection = $"{tasks[2].ToString()} {tasks[3].ToString()} {tasks[4].ToString()} {tasks[5].ToString()}";
+                                    }
+                                    break;
+
+                            }
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Görevi</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@taskFirstSection</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Şirket Sicil No</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li">@personelInfo.RegistrationNumber</td>
+                        <td class="tg-c1rl"></td>
+                        <td class="tg-91w8"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-91w8"></td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@taskSecondSection</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Adı Soyadı</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li"><p id="firstNameandLastName">@personelInfo.FirstNameAndLastName</p></td>
+                        <td class="tg-91w8"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-c1rl"></td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Banka Hesap</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@personelInfo.AccountNumber</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Personel No</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li">@personelInfo.PersonelNo</td>
+                        <td class="tg-l6li">SSK Statüsü</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li">@personelInfo.SskStatu</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ücret Cinsi</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@personelInfo.TypeOfFee</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">T.C. Kimlik No</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li">@personelInfo.TCIdentificationNumber</td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-c1rl"></td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ücret Tutar</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@personelInfo.FeeAmount.ToString("N", CultureInfo.CurrentCulture)</td>
+                    </tr>
+                }
+                <tr>
+                    <td class="tg-l6li" colspan="13">--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</td>
+                </tr>
+                <tr>
+                    <td class="tg-l6li">Kazançlar</td>
+                    <td class="tg-91w8">:</td>
+                    <td class="tg-l6li">Gün&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Saat&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tutar</td>
+                    <td class="tg-l6li">Yasal Kesintiler</td>
+                    <td class="tg-91w8">:</td>
+                    <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tutarlar</td>
+                    <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ek Ödemeler</td>
+                    <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                    <td class="tg-l6li" align="right">Tutar</td>
+                </tr>
+                <tr>
+                    <td class="tg-l6li" colspan="13">--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</td>
+                </tr>
+                @foreach (var payrollAllPayment in Model.PayrollAllPaymentList)
+                {
+                    <tr>
+                        <td class="tg-l6li">Normal Çalışma</td>
+                        <td class="tg-91w8">:</td>
+                        @{
+                            int NormalamountLength = payrollAllPayment.NormalWorkingAmount.ToString("N", CultureInfo.CurrentCulture).Length;
+
+                            @if (NormalamountLength == 8)
+                            {
+                                <td class="tg-l6li">@Convert.ToInt32(payrollAllPayment.NormalWorkingDay)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.NormalWorkingHour&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.NormalWorkingAmount.ToString("N", CultureInfo.CurrentCulture)</td>
+
+                            }
+                            else if (NormalamountLength == 9)
+                            {
+                                <td class="tg-l6li">@Convert.ToInt32(payrollAllPayment.NormalWorkingDay)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.NormalWorkingHour&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.NormalWorkingAmount.ToString("N", CultureInfo.CurrentCulture)</td>
+
+                            }
+                            else if (NormalamountLength == 10)
+                            {
+                                <td class="tg-l6li">@Convert.ToInt32(payrollAllPayment.NormalWorkingDay)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.NormalWorkingHour&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.NormalWorkingAmount.ToString("N", CultureInfo.CurrentCulture)</td>
+
+                            }
+                        }
+                        <td class="tg-l6li">Sigorta Günü</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.InsuranceDay.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            DataTable additionalPaymentDataTable = new DataTable();
+
+                            additionalPaymentDataTable.Columns.Add("Description", typeof(string));
+                            additionalPaymentDataTable.Columns.Add("Value", typeof(decimal));
+                            if (Convert.ToInt32(payrollAllPayment.MarriageBenefitNet) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("Evlilik Yardımı", payrollAllPayment.MarriageBenefitNet);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.MarriageBenefitNb) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("NB Evlilik Yardımı", payrollAllPayment.MarriageBenefitNb);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.MarriageBenefitNk) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("NK Evlilik Yardımı", payrollAllPayment.MarriageBenefitNk);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.ChildBenefit) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("Çocuk Yardımı", payrollAllPayment.ChildBenefit);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.MaternityAllowanceNet) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("Doğum Yardımı", payrollAllPayment.MaternityAllowanceNet);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.MaternityAllowanceNb) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("NB Doğum Yardımı", payrollAllPayment.MaternityAllowanceNb);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.MaternityAllowanceNk) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("NK Doğum Yardımı", payrollAllPayment.MaternityAllowanceNk);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.GoldenHandshake) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("Kıdem", payrollAllPayment.GoldenHandshake);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.TerminationBenefits) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("İhbar", payrollAllPayment.TerminationBenefits);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.Premium) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("Prim", payrollAllPayment.Premium);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.AdvancePayment) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("Avans", payrollAllPayment.AdvancePayment);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.DeathAidNet) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("Ölüm Yardımı", payrollAllPayment.DeathAidNet);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.DeathAidNb) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("NB Ölüm Yardımı", payrollAllPayment.DeathAidNb);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.DeathAidNk) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("NK Ölüm Yardımı", payrollAllPayment.DeathAidNk);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.CollectibleNet) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("Tahsil", payrollAllPayment.CollectibleNet);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.CollectibleNb) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("NB Tahsil", payrollAllPayment.CollectibleNb);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.CollectibleNk) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("NK Tahsil", payrollAllPayment.CollectibleNk);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.FoodAllowanceNet) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("Yemek", payrollAllPayment.FoodAllowanceNet);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.FoodAllowanceNb) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("NB Yemek", payrollAllPayment.FoodAllowanceNb);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.FoodAllowanceNk) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("NK Yemek", payrollAllPayment.FoodAllowanceNk);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.TravelAllowance) != 0)
+                            {
+                                additionalPaymentDataTable.Rows.Add("Yol Yardımı", payrollAllPayment.TravelAllowance);
+                            }
+                            additionalPaymentDataTable.Dispose();
+
+                            DataTable additionalDeductionsDataTable = new DataTable();
+                            additionalDeductionsDataTable.Columns.Add("Description", typeof(string));
+                            additionalDeductionsDataTable.Columns.Add("Value", typeof(decimal));
+
+                            if (Convert.ToInt32(payrollAllPayment.AnnualPermit) != 0)
+                            {
+                                additionalDeductionsDataTable.Rows.Add("Yıllık İzin", payrollAllPayment.AnnualPermit);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.TrafficPenalty) != 0)
+                            {
+                                additionalDeductionsDataTable.Rows.Add("Trafik / HGS Ceza", payrollAllPayment.TrafficPenalty);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.PhoneDataUsage) != 0)
+                            {
+                                additionalDeductionsDataTable.Rows.Add("Telefon Data", payrollAllPayment.PhoneDataUsage);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.PrivateHealthInsurance) != 0)
+                            {
+                                additionalDeductionsDataTable.Rows.Add("Özel Sigorta", payrollAllPayment.PrivateHealthInsurance);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.PremiumDeduction) != 0)
+                            {
+                                additionalDeductionsDataTable.Rows.Add("Net Prim", payrollAllPayment.PremiumDeduction);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.AdvanceDeduction) != 0)
+                            {
+                                additionalDeductionsDataTable.Rows.Add("Avans", payrollAllPayment.AdvanceDeduction);
+                            }
+                            if (Convert.ToInt32(payrollAllPayment.Bes) != 0)
+                            {
+                                additionalDeductionsDataTable.Rows.Add("BES Kesintisi", payrollAllPayment.Bes);
+                            }
+                            additionalDeductionsDataTable.Dispose();
+
+                            int additionalPaymentDataTableCount = additionalPaymentDataTable.Rows.Count;
+                            int additionalDeductionsDataTableCount = additionalDeductionsDataTable.Rows.Count;
+                        }
+
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@additionalPaymentDataTable.Rows[0][0].ToString()</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                        <td class="tg-l6li" align="right">@String.Format("{0:n}", additionalPaymentDataTable.Rows[0][1])</td>
+
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Hafta Tatili</td>
+                        <td class="tg-l6li">:</td>
+                        @{
+                            int WeekendamountLength = payrollAllPayment.WeekendAmount.ToString("N", CultureInfo.CurrentCulture).Length;
+                            @if (WeekendamountLength == 6)
+                            {
+                                <td class="tg-l6li">&nbsp;@Convert.ToInt32(payrollAllPayment.WeekendDay)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.WeekendHour&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.WeekendAmount.ToString("N", CultureInfo.CurrentCulture)</td>
+
+                            }
+                            else if (WeekendamountLength == 8)
+                            {
+                                <td class="tg-l6li">&nbsp;@Convert.ToInt32(payrollAllPayment.WeekendDay)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.WeekendHour&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.WeekendAmount.ToString("N", CultureInfo.CurrentCulture)</td>
+
+                            }
+                            else if (WeekendamountLength == 9)
+                            {
+                                <td class="tg-l6li">&nbsp;@Convert.ToInt32(payrollAllPayment.WeekendDay)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.WeekendHour&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.WeekendAmount.ToString("N", CultureInfo.CurrentCulture)</td>
+
+                            }
+                        }
+                        <td class="tg-l6li">Sigorta Matrahı</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.InsuranceBase.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string description = "";
+                            string value = "";
+                            string separator = "";
+                            int row = 1;
+
+                            if (additionalPaymentDataTableCount > row)
+                            {
+                                if (String.IsNullOrEmpty(additionalPaymentDataTable.Rows[1][0].ToString()))
+                                {
+                                    description = "";
+                                    value = "";
+                                    separator = "";
+                                }
+                                else
+                                {
+                                    description = additionalPaymentDataTable.Rows[1][0].ToString();
+                                    value = String.Format("{0:n}", additionalPaymentDataTable.Rows[1][1]);
+                                    separator = ":";
+                                }
+                            }
+                            else
+                            {
+                                description = "";
+                                value = "";
+                                separator = "";
+                            }
+
+
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@description</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@separator</td>
+                        <td class="tg-l6li" align="right">@value</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Resmi Tatil</td>
+                        <td class="tg-l6li">:</td>
+                        <td class="tg-l6li">&nbsp;@Convert.ToInt32(payrollAllPayment.PublicHoliday)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.PublicHolidayHour&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.PublicHolidayAmount.ToString("N", CultureInfo.CurrentCulture)</td>
+                        <td class="tg-l6li">Gelir Vergisi Matrahı</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.IncomeTaxBase.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string description2 = "";
+                            string value2 = "";
+                            string separator2 = "";
+                            int row2 = 2;
+
+                            if (additionalPaymentDataTableCount > row2)
+                            {
+                                if (String.IsNullOrEmpty(additionalPaymentDataTable.Rows[2][0].ToString()))
+                                {
+                                    description2 = "";
+                                    value2 = "";
+                                    separator2 = "";
+                                }
+                                else
+                                {
+                                    description2 = additionalPaymentDataTable.Rows[2][0].ToString();
+                                    value2 = String.Format("{0:n}", additionalPaymentDataTable.Rows[2][1]);
+                                    separator2 = ":";
+                                }
+                            }
+                            else
+                            {
+                                description2 = "";
+                                value2 = "";
+                                separator2 = "";
+                            }
+
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@description2</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@separator2</td>
+                        <td class="tg-l6li" align="right">@value2</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li">Sakatlık İndirimi</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.DisabilityAllowance.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string description3 = "";
+                            string value3 = "";
+                            string separator3 = "";
+                            int row3 = 3;
+                            if (additionalPaymentDataTableCount > row3)
+                            {
+                                if (String.IsNullOrEmpty(additionalPaymentDataTable.Rows[3][0].ToString()))
+                                {
+                                    description3 = "";
+                                    value3 = "";
+                                    separator3 = "";
+                                }
+                                else
+                                {
+                                    description3 = additionalPaymentDataTable.Rows[3][0].ToString();
+                                    value3 = String.Format("{0:n}", additionalPaymentDataTable.Rows[3][1]);
+                                    separator3 = ":";
+                                }
+                            }
+                            else
+                            {
+                                description3 = "";
+                                value3 = "";
+                                separator3 = "";
+                            }
+
+
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@description3</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@separator3</td>
+                        <td class="tg-l6li" align="right">@value3</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li">Diğer İndirimler</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.OhterDiscount.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string description4 = "";
+                            string value4 = "";
+                            string separator4 = "";
+                            int row4 = 4;
+
+                            if (additionalPaymentDataTableCount > row4)
+                            {
+                                if (String.IsNullOrEmpty(additionalPaymentDataTable.Rows[4][0].ToString()))
+                                {
+                                    description4 = "";
+                                    value4 = "";
+                                    separator4 = "";
+                                }
+                                else
+                                {
+                                    description4 = additionalPaymentDataTable.Rows[4][0].ToString();
+                                    value4 = String.Format("{0:n}", additionalPaymentDataTable.Rows[4][1]);
+                                    separator4 = ":";
+                                }
+                            }
+                            else
+                            {
+                                description4 = "";
+                                value4 = "";
+                                separator4 = "";
+                            }
+
+
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@description4</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@separator4</td>
+                        <td class="tg-l6li" align="right">@value4</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-c1rl"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li">Vergiye Tabi Matrah</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.TaxableBase.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string description5 = "";
+                            string value5 = "";
+                            string separator5 = "";
+                            int row5 = 5;
+
+                            if (additionalPaymentDataTableCount > row5)
+                            {
+                                if (String.IsNullOrEmpty(additionalPaymentDataTable.Rows[5][0].ToString()))
+                                {
+                                    description5 = "";
+                                    value5 = "";
+                                    separator5 = "";
+                                }
+                                else
+                                {
+                                    description5 = additionalPaymentDataTable.Rows[5][0].ToString();
+                                    value5 = String.Format("{0:n}", additionalPaymentDataTable.Rows[5][1]);
+                                    separator5 = ":";
+                                }
+                            }
+                            else
+                            {
+                                description5 = "";
+                                value5 = "";
+                                separator5 = "";
+                            }
+
+
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@description5</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@separator5</td>
+                        <td class="tg-l6li" align="right">@value5</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Fazla Çalışma Kazancı</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li">Kümülatif Matrah</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.CumulativeBase.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string description6 = "";
+                            string value6 = "";
+                            string separator6 = "";
+                            int row6 = 6;
+
+                            if (additionalPaymentDataTableCount > row6)
+                            {
+                                if (String.IsNullOrEmpty(additionalPaymentDataTable.Rows[6][0].ToString()))
+                                {
+                                    description6 = "";
+                                    value6 = "";
+                                    separator6 = "";
+                                }
+                                else
+                                {
+                                    description6 = additionalPaymentDataTable.Rows[6][0].ToString();
+                                    value6 = String.Format("{0:n}", additionalPaymentDataTable.Rows[6][1]);
+                                    separator6 = ":";
+                                }
+                            }
+                            else
+                            {
+                                description6 = "";
+                                value6 = "";
+                                separator6 = "";
+                            }
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@description6</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@separator6</td>
+                        <td class="tg-l6li" align="right">@value6</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">FM %50</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.Fm50Hour.ToString("N", CultureInfo.CurrentCulture)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.Fm50Amount.ToString("N", CultureInfo.CurrentCulture)</td>
+                        <td class="tg-l6li">Kümülatif Vergi</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.CumulativeTax.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string description7 = "";
+                            string value7 = "";
+                            string separator7 = "";
+                            int row7 = 7;
+
+                            if (additionalPaymentDataTableCount > row7)
+                            {
+                                if (String.IsNullOrEmpty(additionalPaymentDataTable.Rows[7][0].ToString()))
+                                {
+                                    description7 = "";
+                                    value7 = "";
+                                    separator7 = "";
+                                }
+                                else
+                                {
+                                    description7 = additionalPaymentDataTable.Rows[7][0].ToString();
+                                    value7 = String.Format("{0:n}", additionalPaymentDataTable.Rows[7][1]);
+                                    separator7 = ":";
+                                }
+                            }
+                            else
+                            {
+                                description7 = "";
+                                value7 = "";
+                                separator7 = "";
+                            }
+                        }
+
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@description7</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@separator7</td>
+                        <td class="tg-l6li" align="right">@value7</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">FM %100</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.Fm100Hour.ToString("N", CultureInfo.CurrentCulture)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.Fm100Amount.ToString("N", CultureInfo.CurrentCulture)</td>
+                        <td class="tg-l6li">Damga Vergisi Mat.</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.StampTaxBase.ToString("N", CultureInfo.CurrentCulture)</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ek Ödemeler Topl.</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                        <td class="tg-l6li" align="right">@payrollAllPayment.TotalOfAdditionalPayments.ToString("N", CultureInfo.CurrentCulture)</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Fazla Mesai Toplamı</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.FmTotalHour.ToString("N", CultureInfo.CurrentCulture)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@payrollAllPayment.FmTotalAmount.ToString("N", CultureInfo.CurrentCulture)</td>
+                        <td class="tg-l6li">SSK İşçi Payı</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.SskWorkerShare.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string deducationDescription1 = "";
+                            string deducationValue1 = "";
+                            string deducationSeparator1 = "";
+                            int deducationRow1 = 1;
+
+                            if (additionalDeductionsDataTableCount > deducationRow1)
+                            {
+                                if (String.IsNullOrEmpty(additionalDeductionsDataTable.Rows[0][0].ToString()))
+                                {
+                                    deducationDescription1 = "";
+                                    deducationValue1 = "";
+                                    deducationSeparator1 = "";
+                                }
+                                else
+                                {
+                                    deducationDescription1 = additionalDeductionsDataTable.Rows[0][0].ToString();
+                                    deducationValue1 = String.Format("{0:n}", additionalDeductionsDataTable.Rows[0][1]);
+                                    deducationSeparator1 = ":";
+                                }
+                            }
+                            else
+                            {
+                                deducationDescription1 = "";
+                                deducationValue1 = "";
+                                deducationSeparator1 = "";
+                            }
+                        }
+
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationDescription1</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationSeparator1</td>
+                        <td class="tg-l6li" align="right">@deducationValue1</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li">İşsizlik İşçi Payı</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.UnemploymentWorkerShare.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string deducationDescription2 = "";
+                            string deducationValue2 = "";
+                            string deducationSeparator2 = "";
+                            int deducationRow2 = 2;
+
+                            if (additionalDeductionsDataTableCount > deducationRow2)
+                            {
+                                if (String.IsNullOrEmpty(additionalDeductionsDataTable.Rows[1][0].ToString()))
+                                {
+                                    deducationDescription2 = "";
+                                    deducationValue2 = "";
+                                    deducationSeparator2 = "";
+                                }
+                                else
+                                {
+                                    deducationDescription2 = additionalDeductionsDataTable.Rows[1][0].ToString();
+                                    deducationValue2 = String.Format("{0:n}", additionalDeductionsDataTable.Rows[1][1]);
+                                    deducationSeparator2 = ":";
+                                }
+                            }
+                            else
+                            {
+                                deducationDescription2 = "";
+                                deducationValue2 = "";
+                                deducationSeparator2 = "";
+                            }
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationDescription2</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationSeparator2</td>
+                        <td class="tg-l6li" align="right">@deducationValue2</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li">Gelir Vergisi</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.IncomeTax.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string deducationDescription3 = "";
+                            string deducationValue3 = "";
+                            string deducationSeparator3 = "";
+                            int deducationRow3 = 3;
+
+                            if (additionalDeductionsDataTableCount > deducationRow3)
+                            {
+                                if (String.IsNullOrEmpty(additionalDeductionsDataTable.Rows[2][0].ToString()))
+                                {
+                                    deducationDescription3 = "";
+                                    deducationValue3 = "";
+                                    deducationSeparator3 = "";
+                                }
+                                else
+                                {
+                                    deducationDescription3 = additionalDeductionsDataTable.Rows[2][0].ToString();
+                                    deducationValue3 = String.Format("{0:n}", additionalDeductionsDataTable.Rows[2][1]);
+                                    deducationSeparator3 = ":";
+                                }
+                            }
+                            else
+                            {
+                                deducationDescription3 = "";
+                                deducationValue3 = "";
+                                deducationSeparator3 = "";
+                            }
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationDescription3</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationSeparator3</td>
+                        <td class="tg-l6li" align="right">@deducationValue3</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-91w8"></td>
+                        <td class="tg-c1rl"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-91w8"></td>
+                        <td class="tg-l6li"></td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li"></td>
+                        <td class="tg-l6li" align="right"></td>
+                        <td class="tg-l6li">Damga Vergisi</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.StampDuty.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string deducationDescription4 = "";
+                            string deducationValue4 = "";
+                            string deducationSeparator4 = "";
+                            int deducationRow4 = 4;
+
+                            if (additionalDeductionsDataTableCount > deducationRow4)
+                            {
+                                if (String.IsNullOrEmpty(additionalDeductionsDataTable.Rows[3][0].ToString()))
+                                {
+                                    deducationDescription4 = "";
+                                    deducationValue4 = "";
+                                    deducationSeparator4 = "";
+                                }
+                                else
+                                {
+                                    deducationDescription4 = additionalDeductionsDataTable.Rows[3][0].ToString();
+                                    deducationValue4 = String.Format("{0:n}", additionalDeductionsDataTable.Rows[3][1]);
+                                    deducationSeparator4 = ":";
+                                }
+                            }
+                            else
+                            {
+                                deducationDescription4 = "";
+                                deducationValue4 = "";
+                                deducationSeparator4 = "";
+                            }
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationDescription4</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationSeparator4</td>
+                        <td class="tg-l6li" align="right">@deducationValue4</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Tüm Kazançlar Topl.</td>
+                        <td class="tg-l6li">:</td>
+                        <td class="tg-l6li" align="right">@payrollAllPayment.SumOfAllGain.ToString("N", CultureInfo.CurrentCulture)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td class="tg-l6li">İşveren SKK Payı</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.SskEmployerShare.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string deducationDescription5 = "";
+                            string deducationValue5 = "";
+                            string deducationSeparator5 = "";
+                            int deducationRow5 = 5;
+
+                            if (additionalDeductionsDataTableCount > deducationRow5)
+                            {
+                                if (String.IsNullOrEmpty(additionalDeductionsDataTable.Rows[4][0].ToString()))
+                                {
+                                    deducationDescription5 = "";
+                                    deducationValue5 = "";
+                                    deducationSeparator5 = "";
+                                }
+                                else
+                                {
+                                    deducationDescription5 = additionalDeductionsDataTable.Rows[4][0].ToString();
+                                    deducationValue5 = String.Format("{0:n}", additionalDeductionsDataTable.Rows[4][1]);
+                                    deducationSeparator5 = ":";
+                                }
+                            }
+                            else
+                            {
+                                deducationDescription5 = "";
+                                deducationValue5 = "";
+                                deducationSeparator5 = "";
+                            }
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationDescription5</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationSeparator5</td>
+                        <td class="tg-l6li" align="right">@deducationValue5</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Tüm Kesintiler Topl.</td>
+                        <td class="tg-l6li">:</td>
+                        <td class="tg-l6li" align="right">@payrollAllPayment.SumOfAllDeduction.ToString("N", CultureInfo.CurrentCulture)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td class="tg-l6li">Yasal Kesintiler Topl.</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.TotalOfLegalDeductions.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string deducationDescription6 = "";
+                            string deducationValue6 = "";
+                            string deducationSeparator6 = "";
+                            int deducationRow6 = 6;
+
+                            if (additionalDeductionsDataTableCount > deducationRow6)
+                            {
+                                if (String.IsNullOrEmpty(additionalDeductionsDataTable.Rows[5][0].ToString()))
+                                {
+                                    deducationDescription6 = "";
+                                    deducationValue6 = "";
+                                    deducationSeparator6 = "";
+                                }
+                                else
+                                {
+                                    deducationDescription6 = additionalDeductionsDataTable.Rows[5][0].ToString();
+                                    deducationValue6 = String.Format("{0:n}", additionalDeductionsDataTable.Rows[5][1]);
+                                    deducationSeparator6 = ":";
+                                }
+                            }
+                            else
+                            {
+                                deducationDescription6 = "";
+                                deducationValue6 = "";
+                                deducationSeparator6 = "";
+                            }
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationDescription6</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationSeparator6</td>
+                        <td class="tg-l6li" align="right">@deducationValue6</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Asgari Geçim İndirimi</td>
+                        <td class="tg-l6li">:</td>
+                        <td class="tg-l6li" align="right">@payrollAllPayment.MinimumLivingAllowance.ToString("N", CultureInfo.CurrentCulture)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td class="tg-l6li">İşsizlik İşveren Payı</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.EmployerShareOfUnemployment.ToString("N", CultureInfo.CurrentCulture)</td>
+                        @{
+                            string deducationDescription7 = "";
+                            string deducationValue7 = "";
+                            string deducationSeparator7 = "";
+                            int deducationRow7 = 7;
+
+                            if (additionalDeductionsDataTableCount >= deducationRow7)
+                            {
+                                if (String.IsNullOrEmpty(additionalDeductionsDataTable.Rows[6][0].ToString()))
+                                {
+                                    deducationDescription7 = "";
+                                    deducationValue7 = "";
+                                    deducationSeparator7 = "";
+                                }
+                                else
+                                {
+                                    deducationDescription7 = additionalDeductionsDataTable.Rows[6][0].ToString();
+                                    deducationValue7 = String.Format("{0:n}", additionalDeductionsDataTable.Rows[6][1]);
+                                    deducationSeparator7 = ":";
+                                }
+                            }
+                            else
+                            {
+                                deducationDescription7 = "";
+                                deducationValue7 = "";
+                                deducationSeparator7 = "";
+                            }
+                        }
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationDescription7</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@deducationSeparator7</td>
+                        <td class="tg-l6li" align="right">@deducationValue7</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-l6li">Net Ödenen Toplamı</td>
+                        <td class="tg-l6li">:</td>
+                        <td class="tg-l6li" align="right">@payrollAllPayment.NetTotalPaid.ToString("N", CultureInfo.CurrentCulture)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td class="tg-l6li">4857 Kanun Teşviki</td>
+                        <td class="tg-91w8">:</td>
+                        <td class="tg-c1rl" align="right">@payrollAllPayment.LawEncouragement4857.ToString("N", CultureInfo.CurrentCulture)</td>
+                        <td class="tg-l6li">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Özel Kesintiler Topl.</td>
+                        <td class="tg-91w8">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</td>
+                        <td class="tg-l6li" align="right">@payrollAllPayment.SpecialDeductionsTotal.ToString("N", CultureInfo.CurrentCulture)</td>
+                    </tr>
+
+                }
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+                @{
+                    foreach (var item in Model.PayrollPersonelInfoList)
+                    {
+                        string period = "";
+                        string[] Periods = item.Period.Split("/");
+                        switch (Periods[0].ToString())
+                        {
+                            case "01":
+                                period = "Ocak";
+                                break;
+                            case "02":
+                                period = "Şubat";
+                                break;
+                            case "03":
+                                period = "Mart";
+                                break;
+                            case "04":
+                                period = "Nisan";
+                                break;
+                            case "05":
+                                period = "Mayıs";
+                                break;
+                            case "06":
+                                period = "Haziran";
+                                break;
+                            case "07":
+                                period = "Temmuz";
+                                break;
+                            case "08":
+                                period = "Ağustos";
+                                break;
+                            case "09":
+                                period = "Eylül";
+                                break;
+                            case "10":
+                                period = "Ekim";
+                                break;
+                            case "11":
+                                period = "Kasım";
+                                break;
+                            case "12":
+                                period = "Aralık";
+                                break;
+                            default:
+                                break;
+                        }
+                        <tr>
+                            <td colspan="12"><p id="period">@period @Periods[1] ayına ait bordromun aslını aldım. Mühteviyatı ile mutabıkım. Belirtilen net ücretimin banka hesabıma yatırıldığını kabul ederim. İmza:____________</p></td>
+                        </tr>
+                    }
+
+                }
+
+
+                @foreach (var item in Model.PayrollPersonelInfoList)
+                {
+                    <tr>
+                        <td colspan="12"><p>Bu belge <b>@DateTime.Now.ToString("d.M.yyyy HH:mm:ss")</b> tarihinde <b>@item.FirstNameAndLastName</b> tarafından oluşturulmuştur.</p></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+
+
+
+    </div>
+    <center><button id="printPdf" class="btn btn-primary btn-block">PDF Çıktısı </button></center>
+    @await Html.PartialAsync("_LayoutJsPartial")
+
+    <script>
+        $(function () {
+
+            $(window).keydown(function (event) {
+
+                if (event.keyCode == 116) {
+
+                    event.preventDefault();
+
+                    return false;
+
+                }
+
+            });
+
+            var name = $("#firstNameandLastName").text();
+            var periodText = $("#period").text();
+            var res = periodText.split(" ");
+            var date = res[0] + "_" + res[1];
+
+
+            $("#printPdf").click(function () {
+                var element = document.getElementById('printDiv');
+                html2pdf(element, {
+                    margin: [1, 5, 0, 5],
+                    filename: `${name}_${date}_Bordro.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 5, logging: true, dpi: 200, letterRendering: true, width: 1355 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+                });
+
+            });
+
+        });
+    </script>
+</body>
+</html>

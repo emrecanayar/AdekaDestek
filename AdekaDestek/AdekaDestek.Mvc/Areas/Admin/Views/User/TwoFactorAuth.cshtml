@@ -1,0 +1,74 @@
+﻿@model AdekaDestek.Mvc.Areas.Admin.Models.AuthenticatorViewModel
+@using AdekaDestek.Core.Utilities.ComplexTypes;
+@{
+    ViewBag.Title = "İki Faktörlü Kimlik Doğrulama";
+    Layout = "_Layout";
+}
+<div id="modalPlaceHolder" aria-hidden="true"></div>
+<div class="row">
+    <div class="col-lg-6 offset-lg-3">
+        <div class="card mt-3">
+            <div class="card-header">
+                <h4 class="text-center"><span class="fas fa-user-lock"></span> İki Faktörlü Kimlik Doğrulama</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="TwoFactorAuth" asp-controller="User" method="post">
+                    <div class="form-group">
+                        <label asp-for="TwoFactorType"></label>
+                        <select class="form-control" id="TwoFactorTypeSelect" asp-for="TwoFactorType" asp-items="Html.GetEnumSelectList<TwoFactorType>()"></select>
+                        <span class="text-danger" asp-validation-for="TwoFactorType"></span>
+                    </div>
+                    <div class="form-group">
+
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" id="btn-save"><span class="fas fa-save"></span> Kaydet</button>
+                </form>
+                <button type="submit" class="btn btn-primary btn-block" id="btn-saveSms"><span class="fas fa-save"></span> Kaydet</button>
+                <a class="btn btn-danger btn-block" asp-area="Admin" asp-controller="Home" asp-action="Index"><span class="fas fa-times"></span> İptal</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card card-waves mb-4 mt-5">
+    <div class="card-body p-5">
+        <div class="row align-items-center justify-content-between">
+            <div class="col">
+                <h2 class="text-primary">Sms İle Kimlik Doğrulama</h2>
+                <p class="text-gray-700">
+                    Sms ile kimlik doğrulama yapabilmek için sistemde kayıtlı cep telefonu numaranız bulunmalıdır. Cep telefonu numaranızı kontrol etmek veya eklemek için aşağıdaki butona tıklayabilirsiniz.
+                    Karşınıza gelen menüden, cep telefonu numarası alanına +90 ile başladıktan sonra numaranızı yazıp "Kaydet" butonuna tıklayınız.
+                </p>
+                <a class="btn btn-primary p-3" asp-area="Admin" asp-controller="User" asp-action="ChangeDetails">
+                    Git
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right ml-1"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+            </div>
+            <div class="col d-none d-lg-block mt-xxl-n4"><img class="img-fluid px-xl-4 mt-xxl-n5" src="~/AdminArea/img/img-homepages/sms-factor-authentication-concept.jpg" width="249px" height="150px"></div>
+        </div>
+    </div>
+</div>
+<div class="card card-waves mb-4 mt-5">
+    <div class="card-body p-5">
+        <div class="row align-items-center justify-content-between">
+            <div class="col">
+                <h2 class="text-primary">Google / Microsoft Authenticator Uygulaması İle Kimlik Doğrulama</h2>
+                <p class="text-gray-700">
+                    Google / Microsoft Authenticator Uygulaması ile kimlik doğrulama yapabilmek için , uygulamayı akıllı telefonlarınızda bulunan uygulama marketlerinden indirmeniz gerekmektedir.
+                    Apple marka cihazlarınız için App Store ve Android işletim sistemine sahip cihazlarınız için Google Play uygulamalarından belirtilen uygulamayı indirdikten sonra karşınıza gelen
+                    QR kodu taratarak iki faktörlü kimlik doğrulama işlemini aktif hale getirebilirsiniz.
+                </p>
+                <a class="btn btn-primary p-3" href="#page-top">
+                    Git
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right ml-1"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
+            </div>
+            <div class="col d-none d-lg-block mt-xxl-n4"><img class="img-fluid px-xl-4 mt-xxl-n5" src="~/AdminArea/img/img-homepages/qr-code-scanning-concept.jpg" width="249px" height="150px"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/AdminArea/js/twoFactorSms.js" type="application/ecmascript"></script>
+
+}

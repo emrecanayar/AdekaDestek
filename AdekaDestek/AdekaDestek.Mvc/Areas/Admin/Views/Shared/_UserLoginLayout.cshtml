@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <link rel="icon" type="image/png" href="~/AdminArea/img/icons/favicon.ico" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@ViewBag.Title | AdekaDestek</title>
+    @await Html.PartialAsync("_LayoutCssPartial")
+    @await RenderSectionAsync("Styles", false)
+
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+        <main>
+            @RenderBody()
+        </main>
+    </div>
+
+    @await Html.PartialAsync("_LayoutJsPartial")
+    @await RenderSectionAsync("Scripts", false)
+</body>
+
+</html>

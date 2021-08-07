@@ -1,0 +1,48 @@
+﻿@using AdekaDestek.Core.Entities.Concrete
+@{
+    Layout = "_ErrorLayout";
+    MvcErrorModel errorModel = ViewData["MvcErrorModel"] as MvcErrorModel;
+    ViewBag.Title = errorModel.Title;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="text-center mt-4 offset-2">
+                @switch (errorModel.StatusCode)
+                {
+                    case 500:
+                        <img class="" src="~/AdminArea/img/img-errorpages/500-internal-server-error.svg" alt="Server Hatası">
+                        break;
+                    case 403:
+                        <img src="~/AdminArea/img/img-errorpages/403-error-forbidden.svg" />
+                        break;
+                    case 404:
+                        <img src="~/AdminArea/img/img-errorpages/404-error.svg" />
+                        break;
+                    case 400:
+                        <img src="~/AdminArea/img/img-errorpages/400-error-bad-request.svg" />
+                        break;
+                    case 401:
+                        <img src="~/AdminArea/img/img-errorpages/401-error-unauthorized.svg" />
+                        break;
+                    case 503:
+                        <img src="~/AdminArea/img/img-errorpages/503-error-service-unavailable.svg" />
+                        break;
+                    case 504:
+                        <img src="~/AdminArea/img/img-errorpages/504-error-gateway-timeout.svg" />
+                        break;
+                    default:
+                        <img class="" src="~/AdminArea/img/img-errorpages/500-internal-server-error.svg" alt="Server Hatası">
+                        break;
+                }
+
+                <p class="lead"><b>@errorModel.Message</b></p>
+                <a class="text-arrow-icon lead" asp-controller="Home" asp-action="Index">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left ml-0 mr-1"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg><b>
+                        Anasayfa'ya dönmek için tıklayınız.
+                    </b>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Ana Sayfa";
+}
+@section Styles{
+    <link href="~/AdminArea/css/card.css" rel="stylesheet" />
+    <link href="~/AdminArea/css/button.css" rel="stylesheet" />
+}
+
+<div class="col-lg-12">
+    <div class="container">
+        <div class="card">
+            <div class="face face1">
+                <div class="content">
+                    <div class="icon text-center icondisplay">
+                        <i class="fas fa-file-pdf text-white" style="position: absolute;  font-size: 80px;   top: 50%;left: 50%;transform: translate(-50%, -50%);transition: 0.7s;" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="face face2">
+                <div class="content">
+                    <h3 class="text-primary">
+                        <a asp-area="Admin" asp-controller="Payroll" asp-action="SearchPayroll" class="cta">
+                            <span class="text-center">Bordro</span><svg width="15px" height="10px" viewBox="0 0 13 10">
+                                <path d="M1,5 L11,5"></path>
+                                <polyline points="8 1 12 5 8 9"></polyline>
+                            </svg>
+                        </a>
+                    </h3>
+                    <p>Bordronuzu pdf formatında görüntülemek için tıklayınız.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="face face1">
+                <div class="content">
+                    <div class="icon">
+                        <i class="fas fa-user-lock text-white" style="position: absolute;  font-size: 80px;   top: 50%;left: 50%;transform: translate(-50%, -50%);transition: 0.7s;" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="face face2">
+                <div class="content">
+                    <h3 class="text-primary">
+                        <a asp-area="Admin" asp-controller="User" asp-action="TwoFactorAuth" class="cta">
+                            <span class="text-center">2FA</span><svg width="15px" height="10px" viewBox="0 0 13 10">
+                                <path d="M1,5 L11,5"></path>
+                                <polyline points="8 1 12 5 8 9"></polyline>
+                            </svg>
+                        </a>
+                    </h3>
+                    <p>İki faktörlü kimlik doğrulama sayfasına gitmek için tıklayınız.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="face face1">
+                <div class="content">
+                    <div class="icon">
+                        <i class="fas fa-address-card text-white" style="position: absolute;  font-size: 80px;   top: 50%;left: 50%;transform: translate(-50%, -50%);transition: 0.7s;" aria-hidden="true"></i>
+
+                    </div>
+                </div>
+            </div>
+            <div class="face face2">
+                <div class="content">
+                    <h3 class="text-primary">
+                        <a asp-area="Admin" asp-controller="User" asp-action="ChangeDetails" class="cta">
+                            <span class="text-center">Profil</span><svg width="15px" height="10px" viewBox="0 0 13 10">
+                                <path d="M1,5 L11,5"></path>
+                                <polyline points="8 1 12 5 8 9"></polyline>
+                            </svg>
+                        </a>
+                    </h3>
+                    <p>Kullanıcı bilgilerinizi düzenlemek için tıklayınız.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

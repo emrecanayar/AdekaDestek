@@ -1,0 +1,45 @@
+﻿@model AdekaDestek.Entities.Dtos.UserDto
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><span class="fas fa-newspaper"></span> @Model.User.Id No'lu Kullanıcı Detayı Görüntüleniyor...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="İptal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Adı</label>
+                        <input type="text" class="form-control" asp-for="User.FirstName" disabled="disabled" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Soyadı</label>
+                        <input type="text" class="form-control" asp-for="User.LastName" disabled="disabled" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Kullanıcı Adı</label>
+                        <input type="text" class="form-control" asp-for="User.UserName" disabled="disabled" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Sap Personel Numarası</label>
+                        <input type="text" class="form-control" asp-for="User.SapEmployeeNo" disabled="disabled" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Sap Kullanıcı Adı</label>
+                        <input type="text" class="form-control" asp-for="User.SapUserName" disabled="disabled" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Infini Kullanıcı Adı</label>
+                        <input type="text" class="form-control" asp-for="User.InfiniUserName" disabled="disabled" />
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><span class="fas fa-times"></span> Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>

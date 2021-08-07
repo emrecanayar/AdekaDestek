@@ -1,0 +1,81 @@
+﻿@model AdekaDestek.Mvc.Areas.Admin.Models.AuthenticatorViewModel
+@{
+    ViewBag.Title = "Microsoft - Google Authenticator";
+    Layout = "_Layout";
+}
+
+
+<div class="row">
+    <div class="col-md-8 offset-lg-2">
+        <div class="card mt-3">
+            <div class="card-header">
+                <h4 class="text-center"><span class="fas fa-user-lock"></span> Google / Microsoft Authenticator</h4>
+            </div>
+            <div class="col-md-12">
+
+                <div class="alert alert-info mt-3">
+
+                    1. Adım : <b>Google / Microsoft Authenticator</b> uygulamasını akıllı telefonunuza yükleyin.(Android, IOS, Windows)
+
+                </div>
+
+                <hr />
+
+                <div class="alert alert-info mt-3">
+
+                    2. Adım : Aşağıdaki barkodu telefonunuzdaki <b>Google / Microsoft Authenticator</b> uygulamasına taratınız veya aşağıdaki <font color="red"><b>Key</b></font> ile belirtilen kodu telefonunuzda ki programa giriniz.
+
+                </div>
+
+                <strong class="text-danger">Key:</strong><strong class="text-primary"> @Model.SharedKey</strong>
+                <hr />
+
+                <div id="qrcode" class="offset-lg-5"></div>
+                <div class="alert alert-info mt-3">
+
+                    3. Adım : İkinci adımı tamamladıktan sonra, telefonunuzun ekranında yer alan <b>'6 haneli'</b> kodu aşağıdaki alana giriniz ve doğrulama işlemini tamamlayınız.
+
+                </div>
+                <hr />
+                <div class="card-body">
+                    <form asp-action="TwoFactorWithAuthenticator" asp-controller="User" method="post">
+                        <div asp-validation-summary="All" class="text-danger" id="validation-summary"></div>
+                        <div class="form-group">
+                            <label asp-for="VerificationCode"></label>
+                            <input asp-for="VerificationCode" class="form-control" />
+                            <span asp-validation-for="VerificationCode"></span>
+                            <input type="hidden" asp-for="AuthenticatorUri" />
+                            <input type="hidden" asp-for="SharedKey" />
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block"><span class="fas fa-save"></span> Kaydet</button>
+                            <a class="btn btn-danger btn-block" asp-area="Admin" asp-controller="Home" asp-action="Index"><span class="fas fa-times"></span> İptal</a>
+
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        var uri = "@Model.AuthenticatorUri";
+        new QRCode(document.getElementById("qrcode"), {
+
+        text: uri,
+        width: 150,
+        height: 150,
+        correctLevel: QRCode.CorrectLevel.H
+        });
+
+       
+
+    </script>
+
+}

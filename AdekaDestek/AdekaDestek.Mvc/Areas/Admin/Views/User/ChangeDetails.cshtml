@@ -1,0 +1,67 @@
+﻿@model AdekaDestek.Entities.Dtos.UserUpdateDto
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Profil Düzenle";
+}
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="card mt-1 mb-1">
+            <div class="card-header">
+                <h4 class="text-center"><span class="fas fa-edit"></span> Profil Düzenle</h4>
+            </div>
+            <div class="card-body">
+                <form asp-controller="User" asp-action="ChangeDetails" enctype="multipart/form-data" method="post" id="form-user-update">
+                    <div asp-validation-summary="All" class="text-danger" id="validation-summary"></div>
+                    <input asp-for="Id" type="hidden" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="UserName"></label>
+                            <input class="form-control" asp-for="UserName" placeholder="Lütfen, kullanıcı adı giriniz." />
+                            <span class="text-danger" asp-validation-for="UserName"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Email"></label>
+                            <input type="email" class="form-control" asp-for="Email" placeholder="Lütfen, e-posta adresi giriniz." readonly />
+                            <span class="text-danger" asp-validation-for="Email"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="FirstName"></label>
+                            <input type="text" class="form-control" asp-for="FirstName" placeholder="Lütfen, ad giriniz." />
+                            <span class="text-danger" asp-validation-for="FirstName"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="LastName"></label>
+                            <input type="text" class="form-control" asp-for="LastName" placeholder="Lütfen, soyad giriniz." />
+                            <span class="text-danger" asp-validation-for="LastName"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="PhoneNumber"></label>
+                            <input type="text" class="form-control" asp-for="PhoneNumber" placeholder="Lütfen, telefon numarası giriniz." />
+                            <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="SapUserName"></label>
+                            <input type="text" class="form-control" asp-for="SapUserName" placeholder="Lütfen, Sap kullanıcı adı giriniz." readonly />
+                            <span class="text-danger" asp-validation-for="SapUserName"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="SapEmployeeNo"></label>
+                            <input type="text" class="form-control" asp-for="SapEmployeeNo" placeholder="Lütfen, Sap personel no giriniz." readonly />
+                            <span class="text-danger" asp-validation-for="SapEmployeeNo"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="InfiniUserName"></label>
+                            <input type="text" class="form-control" asp-for="InfiniUserName" placeholder="Lütfen, İnfini kullanıcı adı giriniz." readonly />
+                            <span class="text-danger" asp-validation-for="InfiniUserName"></span>
+                        </div>
+                        <div class="form-group col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary btn-lg"><span class="fas fa-save"></span> Kaydet</button>
+                            <a class="btn btn-danger btn-lg" asp-area="Admin" asp-controller="Home" asp-action="Index"><span class="fas fa-times"></span> İptal</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
